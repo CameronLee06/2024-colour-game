@@ -8,8 +8,14 @@ import random
 class ChooseRounds:
 
     def __init__(self):
-        # invoke play class with three rounds for testing purposes.
-        self.to_play(3)
+        button_fg = "FFFFFF"
+        button_font = ("Arial", "13", "bold")
+
+        # Set up GUI Frame
+        self.intro_frame = Frame(padx=10, pady=10)
+        self.intro_frame.grid()
+
+
 
     def to_play(self, num_rounds):
         Play(num_rounds)
