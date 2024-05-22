@@ -375,7 +375,7 @@ class Play:
             self.close_play()
 
     def get_stats(self):
-        print("You chose to get the statistics")
+        DisplayStats(self)
 
     def get_help(self):
         DisplayHelp(self)
@@ -411,7 +411,7 @@ class DisplayStats:
 
         stats_text = "Here are your game statistics"
         self.stats_text_label = Label(self.stats_frame, text=stats_text,
-                                     justify="left", bg=stats_bg_colour)
+                                      justify="left", bg=stats_bg_colour)
         self.stats_text_label.grid(row=1, padx=10)
 
         # frame to hold statistics 'table'

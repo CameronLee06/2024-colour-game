@@ -57,16 +57,15 @@ class Play:
                                     )
         self.choose_heading.grid(row=0)
 
-        instructions = "Choose one of the colours below. When you choose" \
-                       "a colour, the computer's choice and the results from" \
+        instructions = "Choose one of the colours below. When you choose " \
+                       "a colour, the computer's choice and the results from " \
                        "the round will be revealed"
         self.instructions_label = Label(self.quest_frame, text=instructions,
                                         wraplength=350, justify="left")
         self.instructions_label.grid(row=1)
 
         # get colours for buttons for first round...
-        button_colours_list = self.get_round_colors()
-        print(button_colours_list)  # for testing purposes only remove
+        self.button_colours_list = []
 
         # create colour buttons (in choice_frame)
         self.choice_frame = Frame(self.quest_frame)
@@ -79,7 +78,7 @@ class Play:
         for item in range(0, 6):
             self.choice_button = Button(self.choice_frame,
                                         width=15,
-                                        command=lambda i=item: self.to_compare(button_colours_list[i])
+                                        command=lambda i=item: self.to_compare(self.button_colours_list[i])
                                         )
             # add button to reference list for later configuration
             self.choice_button_ref.append(self.choice_button)
@@ -98,10 +97,10 @@ class Play:
         self.rounds_frame = Frame(self.quest_frame)
         self.rounds_frame.grid(row=4, pady=5)
 
-        self.round_results_label = Label(self.rounds_frame, text="Rounds",
-                                          width=32, bg="#FFF2CC",
-                                          font=("Arial", 10),
-                                          pady=5)
+        self.round_results_label = Label(self.rounds_frame, text="Round 1: User: - /t Computer: -",
+                                         width=32, bg="#FFF2CC",
+                                         font=("Arial", 10),
+                                         pady=5)
         self.round_results_label.grid(row=0, column=0, padx=5)
 
         self.next_button = Button(self.rounds_frame, text="Next Round",
@@ -129,6 +128,11 @@ class Play:
             ["#808080", "Start Over", "start over"]
         ]
 
+        # list to hold references for control buttons
+        # so that the text of the 'start over' button
+        # can easily be configured when the game is over
+        self.control_button_ref = []
+
         for item in range(0, 3):
             self.make_control_button = Button(self.control_frame,
                                               fg="#FFFFFF",
@@ -137,6 +141,9 @@ class Play:
                                               width=11, font=("Arial", "12", "bold"),
                                               command=lambda i=item: self.to_do(control_buttons[i][2]))
             self.make_control_button.grid(row=0, column=item, padx=5, pady=5)
+
+            # Add buttons to control list
+            self.control_button_ref.append(self.make_control_button)
 
     # retrieve colours from csv file
     def get_all_colours(self):
@@ -176,8 +183,8 @@ class Play:
         # of the round)
         self.next_button.config(state=DISABLED)
 
-        # empty button list so we can get new colours
-        # self.button_colours_list.clear()
+        # empty button list, so we can get new colours
+        self.button_colours_list.clear()
 
         # get new colours for buttons
         self.button_colours_list = self.get_round_colors()
@@ -200,6 +207,8 @@ class Play:
                       "{}".format(current_round + 1, how_many)
         self.choose_heading.config(text=new_heading)
 
+    # Work out who won and if the game is over
+    # update win / loss labels and buttons
     def to_compare(self, user_choice):
 
         how_many = self.rounds_wanted.get()
